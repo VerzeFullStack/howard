@@ -20,7 +20,6 @@ export const NavigationBar = () => {
         instance.loginRedirect(loginRequest).catch((error) => console.log(error));
     };
 
-
     const handleLogoutRedirect = () => {
         instance.logoutPopup({
             mainWindowRedirectUri: '/', // redirects the top level app after logout
@@ -31,6 +30,12 @@ export const NavigationBar = () => {
         if(inProgress === InteractionStatus.None){
            instance.acquireTokenRedirect(b2cPolicies.authorities.editProfile);
         }
+    };
+
+    const handleResetPassword = () => {
+        if(inProgress === InteractionStatus.None){
+            instance.acquireTokenRedirect(b2cPolicies.authorities.forgotPassword);
+         }
     };
     
     return (
@@ -71,7 +76,9 @@ export const NavigationBar = () => {
                     <button onClick={handleLoginRedirect}>
                                 Sign in using Redirect
                     </button>
-                        
+                    <button onClick={handleResetPassword}>
+                                Reset Password Redirect
+                    </button>
                 </div>
             </UnauthenticatedTemplate>
             
