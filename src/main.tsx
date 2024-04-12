@@ -6,7 +6,7 @@ import { PublicClientApplication, EventType, EventMessage, AuthenticationResult 
 import { msalConfig } from "./authConfig.ts";
 import App from "./App.tsx";
 
-import "./styles/index.css";
+import "./styles/main.css";
 
 /**
  * MSAL should be instantiated outside of the component tree to prevent it from being re-instantiated on re-renders.
