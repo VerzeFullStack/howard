@@ -1,18 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./styles/main.css";
 
 import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
-
 import { msalConfig } from "./authConfig.ts";
-import App from "./App.tsx";
 
-import "./styles/main.css";
+import User from "./features/User.tsx"
+import App from "./App.tsx";
+import { store } from "./app/store.ts";
+import { Provider } from "react-redux";
+
 
 /**
  * MSAL should be instantiated outside of the component tree to prevent it from being re-instantiated on re-renders.
  * For more, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
  */
-const msalInstance = new PublicClientApplication(msalConfig);
+export const msalInstance = new PublicClientApplication(msalConfig);
 
 // Default to using the first account if no account is active on page load
 if (
@@ -40,6 +43,9 @@ const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
   <React.StrictMode>
-      <App msalInstance={msalInstance} />
+    <Provider store={store}>
+      <User msalInstance={msalInstance} />
+      <App />
+  </Provider>
   </React.StrictMode>
 );

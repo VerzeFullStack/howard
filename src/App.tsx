@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { MsalProvider } from '@azure/msal-react';
-import { IPublicClientApplication } from '@azure/msal-browser';
-import { NavigationBar } from './NavigationBar';
-
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './styles/App.css';
+import { useAppSelector } from './app/hooks';
+import { selectUser } from './features/userSlice';
 
-type AppProps = {msalInstance: IPublicClientApplication};
+
 /**
  * msal-react is built on the React context API and all parts of your app that require authentication must be
  * wrapped in the MsalProvider component. You will first need to initialize an instance of PublicClientApplication
@@ -15,7 +13,10 @@ type AppProps = {msalInstance: IPublicClientApplication};
  * PublicClientApplication instance via context as well as all hooks and components provided by msal-react. For more, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
  */
-function App( props: AppProps ) {
+function App () {
+
+    const user = useAppSelector(selectUser);
+
     const [count, setCount] = useState(0);
 
     const [myBool, setmyBool] = useState(true);
@@ -26,10 +27,8 @@ function App( props: AppProps ) {
     };
 
   return (
-      <MsalProvider instance={props.msalInstance}>
-                <NavigationBar />
-
-                <div>
+    <>
+        <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -53,7 +52,8 @@ function App( props: AppProps ) {
       <div>
         {myBool ? <p>Total Count: {count}</p> : <p>False!</p>}
       </div>
-        </MsalProvider>
+      <p>Id Token: {user?.idToken}</p>
+        </>
   );
 }
 
