@@ -1,17 +1,36 @@
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
-import { InteractionStatus } from "@azure/msal-browser"; 
-import { loginRequest, b2cPolicies } from './authConfig';
+import { useEffect } from 'react'
+
+import { useAppSelector, useAppDispatch } from '../app/hooks'
+
+import { selectUser, setActiveAccount } from './userSlice'
+import { IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
+import { AuthenticatedTemplate, MsalProvider, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
+import { b2cPolicies, loginRequest } from '../authConfig';
 
 
-export const NavigationBar = () => {
+type UserProps = {msalInstance: IPublicClientApplication};
+
+const LoginComponent = () => {
     const { instance, inProgress } = useMsal();
-    const activeAccount = instance.getActiveAccount();
+    const user = useAppSelector(selectUser);
+    const dispatch = useAppDispatch();
+    // const activeAccount = instance.getActiveAccount();
+
+    useEffect(() => {
+        const activeAccount = instance.getActiveAccount();
+        if (activeAccount) {
+            dispatch(setActiveAccount(activeAccount));
+        }
+    }, [dispatch, instance]);
 
     const handleLoginPopup = () => {
         instance
             .loginPopup({
                 ...loginRequest,
                 redirectUri: '/',
+            })
+            .then(result => {
+                dispatch(setActiveAccount(result.account));
             })
             .catch((error) => console.log(error));
     };
@@ -46,7 +65,7 @@ export const NavigationBar = () => {
                 <center>Welcome to the Microsoft Authentication Library For React Tutorial</center>
             </h5>
             
-                <div>User logged in: {activeAccount?.idTokenClaims?.name}</div>
+                <div>User logged in: {user?.idTokenClaims?.name}</div>
                     <button onClick={handleProfileEdit}>
                             Edit Profile
                     </button>
@@ -85,3 +104,15 @@ export const NavigationBar = () => {
         </>
     );
 };
+
+
+export function User(props: UserProps) {
+  // The `state` arg is correctly typed as `RootState` already
+  return (
+    <MsalProvider instance={props.msalInstance}>
+              <LoginComponent />
+              </MsalProvider>)
+  // omit rendering logic
+}
+
+export default User
