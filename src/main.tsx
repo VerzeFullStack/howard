@@ -1,21 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./styles/main.css";
 
-import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
+import {
+  PublicClientApplication,
+  EventType,
+  EventMessage,
+  AuthenticationResult,
+} from "@azure/msal-browser";
 import { msalConfig } from "./authConfig.ts";
 
-import User from "./features/User.tsx"
-import App from "./App.tsx";
 import { store } from "./app/store.ts";
 import { Provider } from "react-redux";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ProductTable from "./tableComponents/ProductTable.tsx";
+import UserToken from "./features/UserLoginState/UserToken.tsx";
+import NavigatorBar from "./tableComponents/NavigatorBar.tsx";
+import NotFoundPage from "./tableComponents/NotFoundPage.tsx";
+import UserListingTable from "./features/ListingProduct/UserListingTable.tsx";
+
 /**
  * MSAL should be instantiated outside of the component tree to prevent it from being re-instantiated on re-renders.
  * For more, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
  */
 export const msalInstance = new PublicClientApplication(msalConfig);
+
 const queryClient = new QueryClient();
 // Default to using the first account if no account is active on page load
 if (
@@ -40,16 +51,25 @@ msalInstance.addEventCallback((event: EventMessage) => {
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
-if (!root) throw new Error('Failed to find the root element')
+if (!root) throw new Error("Failed to find the root element");
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <User msalInstance={msalInstance} />
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-        
-  </Provider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<NavigatorBar msalInstance={msalInstance} />}
+          >
+            <Route index element={<ProductTable />} />
+            <Route path="UserToken" element={<UserToken />} />
+            <Route path="UserListingTable" element={<UserListingTable />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      <QueryClientProvider client={queryClient} />
+    </Provider>
   </React.StrictMode>
 );
