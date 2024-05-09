@@ -11,7 +11,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import TablePagination from "../../tableComponents/TablePagination";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectAccessToken, selectClaims } from "../UserLoginState/UserSlice";
@@ -25,6 +24,7 @@ import { ProductType } from "../../typeProps/ProductType";
 import ListingFilter from "./ListingFilter";
 import ListingProductForm from "./ListingProductForm";
 import ReactModal from "react-modal";
+import ListingTablePagination from "./ListingTablePagination";
 
 function UserListingTable() {
   const dispatch = useAppDispatch();
@@ -150,16 +150,16 @@ function UserListingTable() {
         ) : (
           <>
             <div>
-              <ListingProductForm
-                selectedProduct={selectedProduct}
-                closeModal={closeModal}
-              />
               <ReactModal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 style={customStyles}
               >
+                <ListingProductForm
+                  selectedProduct={selectedProduct}
+                  closeModal={closeModal}
+                />
                 <button onClick={closeModal}>Close</button>
               </ReactModal>
             </div>
@@ -229,7 +229,7 @@ function UserListingTable() {
                 })}
               </tbody>
             </table>
-            <TablePagination table={table} />
+            <ListingTablePagination table={table} />
             <div>{table.getPrePaginationRowModel().rows.length} Rows</div>
             <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
             <button onClick={() => dispatch(refreshData())}>
