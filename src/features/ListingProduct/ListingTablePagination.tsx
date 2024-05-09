@@ -1,7 +1,7 @@
 import { Table } from "@tanstack/react-table";
-import { ListingProductType } from "../typeProps/ListingProductType";
+import { ProductType } from "../../typeProps/ProductType";
 
-function TablePagination({ table }: { table: Table<ListingProductType> }) {
+function ListingTablePagination({ table }: { table: Table<ProductType> }) {
   return (
     <>
       <div className="flex items-center gap-2">
@@ -69,4 +69,4 @@ function TablePagination({ table }: { table: Table<ListingProductType> }) {
   );
 }
 
-export default TablePagination;
+export default ListingTablePagination;
