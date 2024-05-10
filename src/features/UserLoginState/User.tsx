@@ -17,6 +17,8 @@ import {
 import { b2cPolicies, loginRequest } from "../../authConfig";
 import UserProps from "../../typeProps/MsalUserPropsType";
 import { Link } from "react-router-dom";
+import { appInsights } from "../../ApplicationInsightsService";
+import { SeverityLevel } from "@microsoft/applicationinsights-web";
 
 const LoginComponent = () => {
   const { instance, inProgress } = useMsal();
@@ -40,6 +42,10 @@ const LoginComponent = () => {
       instance.acquireTokenSilent(accessTokenRequest).then((result) => {
         // Acquire token silent success
         dispatch(setAccessToken(result.accessToken));
+        appInsights.trackTrace({
+          message: "Acquire access token silent succeed.",
+          severityLevel: SeverityLevel.Information,
+        });
       });
     });
   }, [dispatch, instance]);
@@ -51,6 +57,10 @@ const LoginComponent = () => {
         redirectUri: "/",
       })
       .then((result) => {
+        appInsights.trackTrace({
+          message: "User logged in.",
+          severityLevel: SeverityLevel.Information,
+        });
         dispatch(setAccessToken(result.accessToken));
         dispatch(setActiveAccount(result.account));
         dispatch(setClaims(result.idTokenClaims));
