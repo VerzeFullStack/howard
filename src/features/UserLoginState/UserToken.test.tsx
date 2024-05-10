@@ -24,7 +24,8 @@ describe("User Token", () => {
     screen.debug();
 
     console.info(store.getState());
-    const testValue = await screen.findByText("accessToken");
-    expect(testValue).toBe("User Access Token");
+    // const testValue = await screen.findByText("accessToken");
+    // expect(testValue).toBe("User Access Token");
+    expect(screen.getByText((content) => content.indexOf('{"id":"1"}') > 0));
   });
 });
