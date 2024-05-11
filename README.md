@@ -30,3 +30,5 @@ export default {
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
 [![BuildAndTest CI](https://github.com/VerzeFullStack/howard/actions/workflows/BuildAndTest.yml/badge.svg)](https://github.com/VerzeFullStack/howard/actions/workflows/BuildAndTest.yml)
+
+[![Azure Static Web Apps](https://github.com/VerzeFullStack/howard/actions/workflows/azure-static-web-apps-agreeable-cliff-06fed350f.yml/badge.svg)](https://github.com/VerzeFullStack/howard/actions/workflows/azure-static-web-apps-agreeable-cliff-06fed350f.yml)
