@@ -1,7 +1,7 @@
 name: Azure Static Web Apps
 
 env:
-  APP_LOCATION: "src" # location of your client code
+  APP_LOCATION: "dist" # location of your client code
   API_LOCATION: "" # location of your api source code - optional
   OUTPUT_LOCATION: "public" # location of client code build output
   
