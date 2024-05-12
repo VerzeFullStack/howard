@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectAccessToken, selectClaims } from "../UserLoginState/UserSlice";
 import {
@@ -208,22 +208,23 @@ function UserListingTable() {
                 {table.getRowModel().rows.map((row) => {
                   return (
                     <>
-                      <tr
-                        key={row.id}
-                        onClick={() => openModal(row.original)}
-                        className="cursor-pointer tr-hover"
-                      >
-                        {row.getVisibleCells().map((cell) => {
-                          return (
-                            <td key={cell.id}>
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
-                            </td>
-                          );
-                        })}
-                      </tr>
+                      <Fragment key={row.id}>
+                        <tr
+                          onClick={() => openModal(row.original)}
+                          className="cursor-pointer tr-hover"
+                        >
+                          {row.getVisibleCells().map((cell) => {
+                            return (
+                              <td key={cell.id}>
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      </Fragment>
                     </>
                   );
                 })}
