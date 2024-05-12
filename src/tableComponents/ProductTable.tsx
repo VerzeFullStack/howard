@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "../styles/ProductTable.css";
 
 import {
@@ -33,7 +33,6 @@ function ProductTable() {
         header: "Product Name",
         enableSorting: false,
         enableColumnFilter: true,
-        filterFn: "includesString",
         //this column will sort in ascending order by default since it is a string column
       },
       {
@@ -45,7 +44,6 @@ function ProductTable() {
         accessorKey: "quantity",
         header: "Quantity",
         enableColumnFilter: false,
-
         //this column will sort in descending order by default since it is a number column
       },
       {
@@ -168,24 +166,29 @@ function ProductTable() {
               {table.getRowModel().rows.map((row) => {
                 return (
                   <>
-                    <tr key={row.id} onClick={row.getToggleExpandedHandler()}>
-                      {row.getVisibleCells().map((cell) => {
-                        return (
-                          <td key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                    <tr>
-                      {/* 2nd row is a custom 1 cell row */}
-                      <td colSpan={row.getVisibleCells().length}>
-                        {renderSubComponent({ row })}
-                      </td>
-                    </tr>
+                    <Fragment key={row.id}>
+                      <tr
+                        onClick={row.getToggleExpandedHandler()}
+                        className="cursor-pointer tr-hover"
+                      >
+                        {row.getVisibleCells().map((cell) => {
+                          return (
+                            <td key={cell.id}>
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                      <tr>
+                        {/* 2nd row is a custom 1 cell row */}
+                        <td colSpan={row.getVisibleCells().length}>
+                          {renderSubComponent({ row })}
+                        </td>
+                      </tr>
+                    </Fragment>
                   </>
                 );
               })}
