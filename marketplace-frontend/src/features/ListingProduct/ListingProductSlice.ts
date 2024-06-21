@@ -1,0 +1,87 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { ProductType } from "../../typeProps/ProductType";
+import {
+  FetchProduct,
+  AddProductToUserListingTable,
+} from "../../api/GetProductAPI";
+
+export enum LoadingStatus {
+  Idle = 0,
+  Loading = 1,
+  Succeeed = 2,
+  Failed = 3,
+}
+
+export interface ListingState {
+  products: Array<ProductType>;
+  loading: LoadingStatus;
+  error: string | null | undefined;
+}
+
+const initialState: ListingState = {
+  products: [],
+  loading: LoadingStatus.Idle,
+  error: null,
+};
+
+export const fetchProduct = createAsyncThunk(
+  "UserListingTable/FetchProduct",
+  async (_userTokenId: string | undefined) => {
+    const response = await FetchProduct(_userTokenId);
+    return response;
+  }
+);
+
+export const addProductToUserListingTable = createAsyncThunk(
+  "UserListingTable/AddProductToUserListingTable",
+  async (productId: ProductType) => {
+    const response = await AddProductToUserListingTable(productId.id);
+    if (response) {
+      return productId;
+    }
+    return null;
+  }
+);
+
+export const ListingProductSlice = createSlice({
+  name: "listingProduct",
+  initialState,
+  reducers: {
+    listProduct(state, action: PayloadAction<string>) {
+      state.products = state.products.filter(
+        (p) => p.productName !== action.payload
+      );
+    },
+    refreshData(state) {
+      state.loading = LoadingStatus.Idle;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProduct.pending, (state) => {
+        state.loading = LoadingStatus.Loading;
+      })
+      .addCase(fetchProduct.rejected, (state, action) => {
+        state.loading = LoadingStatus.Failed;
+        state.error = action.error.message;
+      })
+      .addCase(fetchProduct.fulfilled, (state, action) => {
+        state.loading = LoadingStatus.Succeeed;
+        state.products = action.payload;
+      })
+      .addCase(addProductToUserListingTable.fulfilled, (state, action) => {
+        if (action.payload != null) {
+          state.products.push(action.payload);
+        }
+      });
+  },
+});
+
+export const { listProduct, refreshData } = ListingProductSlice.actions;
+
+export const selectListingProduct = (state: RootState) =>
+  state.listingProduct.products;
+
+export default ListingProductSlice.reducer;
