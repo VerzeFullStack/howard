@@ -12,10 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latestdefaults:
-    defaults:
-       run:
-         working-directory: ./marketplace-backend/
+    runs-on: ubuntu-latestdefaults
 
     steps:
     - uses: actions/checkout@v4
