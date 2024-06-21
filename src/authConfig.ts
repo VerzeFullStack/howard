@@ -53,7 +53,11 @@ export const msalConfig: Configuration = {
   },
   system: {
     loggerOptions: {
-      loggerCallback: (level:LogLevel, message:string, containsPii:boolean) => {
+      loggerCallback: (
+        level: LogLevel,
+        message: string,
+        containsPii: boolean
+      ) => {
         if (containsPii) {
           return;
         }
@@ -86,8 +90,18 @@ export const protectedResources = {
   apiTodoList: {
     endpoint: "http://localhost:5000/api/todolist",
     scopes: {
-      read: ["https://fullstacke.onmicrosoft.com/tasks-api/tasks.read"],
-      write: ["https://fullstacke.onmicrosoft.com/tasks-api/tasks.write"],
+      users: {
+        read: ["https://fullstacke.onmicrosoft.com/users-api/users.read"],
+        write: ["https://fullstacke.onmicrosoft.com/users-api/users.write"],
+      },
+      listingProducts: {
+        read: [
+          "https://fullstacke.onmicrosoft.com/users-api/listingproducts.read",
+        ],
+        write: [
+          "https://fullstacke.onmicrosoft.com/users-api/listingproducts.write",
+        ],
+      },
     },
   },
 };
@@ -100,7 +114,9 @@ export const protectedResources = {
  */
 export const loginRequest = {
   scopes: [
-    ...protectedResources.apiTodoList.scopes.read,
-    ...protectedResources.apiTodoList.scopes.write,
+    ...protectedResources.apiTodoList.scopes.users.read,
+    ...protectedResources.apiTodoList.scopes.users.write,
+    ...protectedResources.apiTodoList.scopes.listingProducts.read,
+    ...protectedResources.apiTodoList.scopes.listingProducts.write,
   ],
 };
