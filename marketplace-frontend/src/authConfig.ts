@@ -91,7 +91,7 @@ export const protectedResources = {
     endpoint: "http://localhost:5000/api/todolist",
     scopes: {
       users: {
-        read: ["https://fullstacke.onmicrosoft.com/users-api/tasks.read"],
+        read: ["https://fullstacke.onmicrosoft.com/users-api/users.read"],
         write: ["https://fullstacke.onmicrosoft.com/users-api/users.write"],
       },
       listingProducts: {
