@@ -11,7 +11,7 @@ public class ProductInventoryController(ILogger<ProductInventory> logger, Market
         private readonly ILogger<ProductInventory> _logger = logger;
         private readonly MarketplaceContext _context = context;
 
-    [HttpPost, MapToApiVersion( 1.0 )]
+    [HttpPost]
     public async Task<ActionResult<User>> PostProductInventory(ProductInventory productInventory)
     {
         _context.ProductInventories.Add(productInventory);

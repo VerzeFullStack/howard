@@ -20,12 +20,17 @@ import UserToken from "./features/UserLoginState/UserToken.tsx";
 import NavigatorBar from "./tableComponents/NavigatorBar.tsx";
 import NotFoundPage from "./tableComponents/NotFoundPage.tsx";
 import UserListingTable from "./features/ListingProduct/UserListingTable.tsx";
+import { injectStore } from "./api/ApiClient.ts";
+import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
+import { reactPlugin } from "./ApplicationInsightsService.tsx";
 
 /**
  * MSAL should be instantiated outside of the component tree to prevent it from being re-instantiated on re-renders.
  * For more, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
  */
 export const msalInstance = new PublicClientApplication(msalConfig);
+
+injectStore(store);
 
 const queryClient = new QueryClient();
 // Default to using the first account if no account is active on page load
@@ -55,21 +60,23 @@ if (!root) throw new Error("Failed to find the root element");
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={<NavigatorBar msalInstance={msalInstance} />}
-          >
-            <Route index element={<ProductTable />} />
-            <Route path="UserToken" element={<UserToken />} />
-            <Route path="UserListingTable" element={<UserListingTable />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      <QueryClientProvider client={queryClient} />
-    </Provider>
+    <AppInsightsContext.Provider value={reactPlugin}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={<NavigatorBar msalInstance={msalInstance} />}
+            >
+              <Route index element={<ProductTable />} />
+              <Route path="UserToken" element={<UserToken />} />
+              <Route path="UserListingTable" element={<UserListingTable />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+        <QueryClientProvider client={queryClient} />
+      </Provider>
+    </AppInsightsContext.Provider>
   </React.StrictMode>
 );

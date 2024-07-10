@@ -8,7 +8,7 @@ const reactPlugin = new ReactPlugin();
 const appInsights = new ApplicationInsights({
   config: {
     connectionString:
-      "InstrumentationKey=43fe3ee1-a534-4f91-b5d9-15001ed24b9f;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=32ca73af-24ea-46c5-a565-f4e09f91b6b5",
+      "InstrumentationKey=d0626b42-b7ec-46b6-a9bc-ae036ce14405;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=c108addb-500f-44af-8f68-b1df04798318",
     extensions: [reactPlugin],
     enableAutoRouteTracking: true,
     disableAjaxTracking: false,

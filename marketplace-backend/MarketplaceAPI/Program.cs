@@ -3,6 +3,8 @@ using Microsoft.Identity.Web;
 using MarketplaceAPI.Models;
 using System.Text.Json.Serialization;
 using MarketplaceAPI.Filters;
+using Microsoft.Extensions.Logging.ApplicationInsights;
+using MarketplaceAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,14 +38,20 @@ builder.Services.AddApiVersioning(
                     } )
                 .AddMvc();
 
+builder.Services.AddApplicationInsightsTelemetry();
+
+builder.Logging.AddApplicationInsights();
+
+builder.Logging.AddFilter<ApplicationInsightsLoggerProvider>("", LogLevel.Warning);
+builder.Logging.AddFilter<ApplicationInsightsLoggerProvider>("MarketplaceAPI.Controllers", LogLevel.Information);
+
 var app = builder.Build();
 
+app.UseMiddleware<CorsMiddleware>();
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 // app.UseMiddleware<ExceptionMiddleware>();
@@ -53,3 +61,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

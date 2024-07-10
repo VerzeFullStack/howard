@@ -1,7 +1,8 @@
 import { ProductType } from "./ProductType";
+import { User } from "./User";
 
 export type ListingProductType = ProductType & {
-  seller: string;
+  seller: User;
   description: string;
   price: string;
   quantity: number;
