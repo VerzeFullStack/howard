@@ -4,7 +4,7 @@ env:
   APP_LOCATION: "dist" # location of your client code
   API_LOCATION: "" # location of your api source code - optional
   OUTPUT_LOCATION: "public" # location of client code build output
-  
+
 on:
   push:
     branches:
@@ -50,3 +50,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_CLIFF_06FED350F }}
           action: "close"
+          app_location: ${{ env.APP_LOCATION }} # App source code path

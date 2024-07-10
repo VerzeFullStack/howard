@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import "../styles/ProductTable.css";
 
 import {
@@ -56,6 +56,11 @@ function ProductTable() {
         sortDescFirst: false, //first sort order will be ascending (nullable values can mess up auto detection of sort order)
         enableColumnFilter: false,
       },
+      {
+        accessorKey: "seller.displayName",
+        header: () => "Seller",
+        enableSorting: false,
+      },
     ],
     []
   );
@@ -71,7 +76,18 @@ function ProductTable() {
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
-  const [data] = React.useState(() => getProduct(1000));
+  const [data, setData] = React.useState<ListingProductType[]>([]);
+
+  async function fetchListingProducts() {
+    const response = await getProduct();
+    setData(response.data);
+  }
+
+  useEffect(() => {
+    if (accessToken != null) {
+      fetchListingProducts();
+    }
+  }, [accessToken]);
 
   const table = useReactTable({
     data,

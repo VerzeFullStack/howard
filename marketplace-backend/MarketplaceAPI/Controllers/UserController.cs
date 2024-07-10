@@ -13,6 +13,7 @@ namespace MarketplaceAPI.Controllers;
 [Route( "api/v{version:apiVersion}/[controller]" )]
 public class UserController(ILogger<UserController> logger, MarketplaceContext context) : ControllerBase
 {
+    public const string DisplayNameClaimType = "displayName";
     private readonly ILogger<UserController> _logger = logger;
     private readonly MarketplaceContext _context = context;
 
@@ -21,6 +22,7 @@ public class UserController(ILogger<UserController> logger, MarketplaceContext c
     [RequiredScope("users.read")]
     public async Task<ActionResult<IEnumerable<User>>> GetUsers()
     {
+        _logger.LogInformation("test user get log");
         return await _context.Users.Include(u => u.ProductInventory).ToListAsync();
     }
 
@@ -42,7 +44,7 @@ public class UserController(ILogger<UserController> logger, MarketplaceContext c
     // PUT: api/Users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     // <snippet_Update>
-    [HttpPut("{id}"), MapToApiVersion( 1.0 )]
+    [HttpPatch("{id}"), MapToApiVersion( 1.0 )]
     public async Task<IActionResult> PutUsers(string id, User user)
     {
         var userId = HttpContext.User.Identity?.Name;
@@ -53,34 +55,21 @@ public class UserController(ILogger<UserController> logger, MarketplaceContext c
 
         var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id) ?? throw new KeyNotFoundException($"User with ID {user.Id} does not exist.");
 
-        existingUser.Name = user.Name;
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException) when (!UserExists(id))
-        {
-            return NotFound();
-        }
-
+        existingUser.DisplayName = user.DisplayName;
+        await _context.SaveChangesAsync();
+       
         return Ok(existingUser);
     }
-
-    private bool UserExists(string id)
-    {
-        throw new NotImplementedException($"User already exist {id}");
-    }
-
     // </snippet_Update>
 
     // POST: api/Users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     // <snippet_Create>
     [HttpPost, MapToApiVersion( 1.0 )]
-    public async Task<ActionResult<User>> PostUsers()
+    public async Task<ActionResult<User>> CreateUser()
     {
         var userId = HttpContext.User.Identity?.Name;
-        var displayName = HttpContext.User.Claims.First(c => c.Type == "Name").Value;
+        var displayName = HttpContext.User.Claims.First(c => c.Type == DisplayNameClaimType).Value;
         if (String.IsNullOrEmpty(userId))
         {
             throw new ArgumentException("Invalid User ID.");
@@ -89,7 +78,7 @@ public class UserController(ILogger<UserController> logger, MarketplaceContext c
         var newUser = new User()
         {
             Id = userId,
-            Name = displayName,
+            DisplayName = displayName,
             Balance = 0,
             LastLogonDateTime = DateTime.Now,
             RegisteredDateTime = DateTime.Now
@@ -98,7 +87,7 @@ public class UserController(ILogger<UserController> logger, MarketplaceContext c
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(
-            nameof(PostUsers),
+            nameof(CreateUser),
             new { id = newUser.Id },
             newUser);
     }
