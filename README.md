@@ -2,6 +2,10 @@
 
 [![Azure Static Web Apps](https://github.com/VerzeFullStack/howard/actions/workflows/azure-static-web-apps-agreeable-cliff-06fed350f.yml/badge.svg)](https://github.com/VerzeFullStack/howard/actions/workflows/azure-static-web-apps-agreeable-cliff-06fed350f.yml)
 
+[![.NET](https://github.com/VerzeFullStack/howard/actions/workflows/dotnetbuild.yml/badge.svg)](https://github.com/VerzeFullStack/howard/actions/workflows/dotnetbuild.yml)
+
+[![Build and deploy ASP.Net Core app to Azure Web App - fullstacke](https://github.com/VerzeFullStack/howard/actions/workflows/main_fullstacke.yml/badge.svg)](https://github.com/VerzeFullStack/howard/actions/workflows/main_fullstacke.yml)
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -21,12 +25,12 @@ If you are developing a production application, we recommend updating the config
 export default {
   // other rules...
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: ["./tsconfig.json", "./tsconfig.node.json"],
     tsconfigRootDir: __dirname,
   },
-}
+};
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
