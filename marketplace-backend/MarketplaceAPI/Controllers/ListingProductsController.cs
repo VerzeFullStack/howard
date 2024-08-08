@@ -7,9 +7,9 @@ namespace MarketplaceAPI.Controllers;
 
 [ApiController]
 [Route( "api/v{version:apiVersion}/[controller]" )]
-public class ListingProductController(ILogger<ListingProductController> logger, MarketplaceContext context) : ControllerBase
+public class ListingProductsController(ILogger<ListingProductsController> logger, MarketplaceContext context) : ControllerBase
 {
-    private readonly ILogger<ListingProductController> _logger = logger;
+    private readonly ILogger<ListingProductsController> _logger = logger;
     private readonly MarketplaceContext _context = context;
     
     [HttpGet]

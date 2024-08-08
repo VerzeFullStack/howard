@@ -26,7 +26,7 @@ const initialState: ListingState = {
   error: null,
 };
 
-export const fetchProduct = createAsyncThunk(
+export const fetchProduct = createAsyncThunk<ProductType[], string | undefined>(
   "UserListingTable/FetchProduct",
   async (_userTokenId: string | undefined) => {
     const response = await FetchProduct(_userTokenId);
@@ -36,10 +36,10 @@ export const fetchProduct = createAsyncThunk(
 
 export const addProductToUserListingTable = createAsyncThunk(
   "UserListingTable/AddProductToUserListingTable",
-  async (productId: ProductType) => {
-    const response = await AddProductToUserListingTable(productId.id);
+  async (product: ProductType) => {
+    const response = await AddProductToUserListingTable(product.productName);
     if (response) {
-      return productId;
+      return product;
     }
     return null;
   }
@@ -49,10 +49,8 @@ export const ListingProductSlice = createSlice({
   name: "listingProduct",
   initialState,
   reducers: {
-    listProduct(state, action: PayloadAction<string>) {
-      state.products = state.products.filter(
-        (p) => p.productName !== action.payload
-      );
+    listProduct(state, action: PayloadAction<number>) {
+      state.products = state.products.filter((p) => p.id !== action.payload);
     },
     refreshData(state) {
       state.loading = LoadingStatus.Idle;

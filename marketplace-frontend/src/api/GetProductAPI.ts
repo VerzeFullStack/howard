@@ -3,7 +3,7 @@ import { ProductType } from "../typeProps/ProductType";
 
 const newProduct = (): ProductType => {
   return {
-    id: faker.string.uuid(),
+    id: faker.number.int(),
     productName: faker.commerce.productName(),
     category: faker.commerce.department(),
   };

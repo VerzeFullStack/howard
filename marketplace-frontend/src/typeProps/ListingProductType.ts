@@ -4,6 +4,6 @@ import { User } from "./User";
 export type ListingProductType = ProductType & {
   seller: User;
   description: string;
-  price: string;
+  price: number;
   quantity: number;
 };

@@ -3,7 +3,19 @@ import type { FieldApi } from "@tanstack/react-form";
 import { ProductType } from "../../typeProps/ProductType";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
+function FieldInfo({
+  field,
+}: {
+  field: FieldApi<
+    { productName: string; quantity: number; price: number },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    undefined,
+    undefined,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+  >;
+}) {
   return (
     <>
       {field.state.meta.touchedErrors ? (
