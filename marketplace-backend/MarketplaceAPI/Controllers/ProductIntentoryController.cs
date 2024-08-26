@@ -1,9 +1,11 @@
 using Asp.Versioning;
 using MarketplaceAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route( "api/v{version:apiVersion}/[controller]" )]
 public class ProductInventoryController(ILogger<ProductInventory> logger, MarketplaceContext context) : ControllerBase

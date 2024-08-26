@@ -1,10 +1,12 @@
 using Asp.Versioning;
 using MarketplaceAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route( "api/v{version:apiVersion}/[controller]" )]
 public class ListingProductsController(ILogger<ListingProductsController> logger, MarketplaceContext context) : ControllerBase
